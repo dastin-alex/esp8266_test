@@ -91,10 +91,18 @@
 // --                         Serial.begin          начальная настройка модуля UART                      --
 // --                         Serial.println        вывод строки в UART                                  --
 // --                         Serial.print          вывод символов в UART                                --
+// --                         WiFi.begin            регистрация в сети WIFI                              --
 // --                         WiFi.mode             начальная настройка модуля WIFI                      --
-// --                         WiFi.disconnect       отключение модуля WIFI                               --
+// --                         WiFi.status           состояние соединения WiFi                            --
 // --                         WiFi.scanNetworks     поиск активных точек подключения WIFI                --
-// --                                                                                                    --
+// --                         WiFi.hostByName       выбор IP адреса хоста по имени                       --
+// --                         WiFi.disconnect       отключение модуля WIFI                               --
+// --                         udp.begin             начало работы с протоколом UDP                       --
+// --                         udp.read              чтение кадра UDP                                     --
+// --                         udp.write             запись данных в кадр UDP                             --
+// --                         udp.beginPacket       начало кадра UDP                                     --
+// --                         udp.endPacket         конец кадра UDP                                      --
+// --                         udp.parsePacket       синтаксический разбор кадра UDP                      --
 // --                                                                                                    --
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // --------------------------------------------------------------------------------------------------------
@@ -170,7 +178,7 @@ void setup()
   // начало сеанса работы по протоколу UDP
   // ----------------------------------------------------------------------------
 
-  udp.begin(localPort); // МЕТОД udp.begin
+  udp.begin(localPort); // МЕТОД udp.begin : начало работы с протоколом UDP
 
   // ----------------------------------------------------------------------------
   //                                                                       ЗАДАЧА TS05
@@ -226,7 +234,7 @@ void loop()
   // случайный выбор сервера NTP из пула
   // ----------------------------------------------------------------------------
 
-  WiFi.hostByName(ntpServerName, timeServerIP); // МЕТОД WiFi.hostByName
+  WiFi.hostByName(ntpServerName, timeServerIP); // МЕТОД WiFi.hostByName : выбор IP адреса хоста по имени
 
   // ----------------------------------------------------------------------------
   //                                                                       ЗАДАЧА TS07
@@ -255,9 +263,9 @@ void loop()
   // передача пакета в порт 123.
   // ----------------------------------------------------------------------------
 
-  udp.beginPacket(timeServerIP, 123);       // МЕТОД udp.beginPacket
-  udp.write(packetBuffer, NTP_PACKET_SIZE); // МЕТОД udp.write
-  udp.endPacket();                          // МЕТОД udp.endPacket
+  udp.beginPacket(timeServerIP, 123);       // МЕТОД udp.beginPacket : начало кадра UDP
+  udp.write(packetBuffer, NTP_PACKET_SIZE); // МЕТОД udp.write : запись данных в кадр UDP
+  udp.endPacket();                          // МЕТОД udp.endPacket : конец кадра UDP
 
   // ---------------------------------------------------------------------- delay 1000
   //                                                                       ЗАДАЧА TS09
@@ -284,7 +292,7 @@ void loop()
   // ЕСЛИ длина пакета != 0 : ТО пакет UDP получен
   // ----------------------------------------------------------------------------
 
-  cb = udp.parsePacket(); // МЕТОД udp.parsePacket
+  cb = udp.parsePacket(); // МЕТОД udp.parsePacket : синтаксический разбор кадра UDP
 
   if (cb)
 
@@ -295,7 +303,7 @@ void loop()
     // сохранение полученного пакета в буфер
     // ----------------------------------------------------------------------------
 
-    udp.read(packetBuffer, NTP_PACKET_SIZE); // МЕТОД udp.read
+    udp.read(packetBuffer, NTP_PACKET_SIZE); // МЕТОД udp.read : чтение кадра UDP
 
     // ----------------------------------------------------------------------------
     //                                                                       ЗАДАЧА TS12
@@ -329,10 +337,10 @@ void loop()
     // время GMT+3 соответствует текущему времени в Москве
     // ----------------------------------------------------------------------------
 
-    Serial.print("packet length = "); // МЕТОД Serial.print
-    Serial.println(cb);               // МЕТОД Serial.println
-    Serial.print("NTP time   = ");    // МЕТОД Serial.print
-    Serial.println(secsSince1900);    // МЕТОД Serial.println
+    // Serial.print("packet length = "); // МЕТОД Serial.print
+    // Serial.println(cb);               // МЕТОД Serial.println
+    // Serial.print("NTP time   = ");    // МЕТОД Serial.print
+    // Serial.println(secsSince1900);    // МЕТОД Serial.println
     Serial.print("GMT time   = ");    // МЕТОД Serial.print
     Serial.println(epoch);            // МЕТОД Serial.println
     Serial.print("GMT+3 time = ");    // МЕТОД Serial.print
