@@ -55,19 +55,18 @@
 
 const char *ssid = STASSID;                      // имя сети WIFI
 const char *pass = STAPSK;                       // пароль сети WIFI
+const unsigned int localPort = 2390;             // локальный порт для приёма UDP пакетов
 const char *ntpServerName = "time.nist.gov";     // DNS-адрес NTP сервера time.nist.gov
 const int NTP_PACKET_SIZE = 48;                  // размер пакета 48 байт
 const unsigned long seventyYears = 2208988800UL; // количество секунд в 70 годах
 const unsigned long secsDay = 86400L;            // количество секунд в одном дне
-const int serial1_led = 2;                       // светодиод. количество повторений серии 0 (30/600)
-const int serial2_led = 2;                       // светодиод. количество повторений серии 1 (500/500)
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------------------------------------------------------------
-// ПЕРЕМЕННЫЕ
+// ОБЪЕКТЫ
 // ----------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
 
-unsigned int localPort = 2390; // контроллер NTP. локальный порт для приёма UDP пакетов
-IPAddress timeServerIP;        // контроллер NTP. IP-адрес NTP сервера time.nist.gov
-WiFiUDP udp;                   // контроллер NTP. экземпляр контроллера UDP для приёма/передачи UDP-пакетов
+WiFiUDP udp;                        // экземпляр контроллера UDP для приёма/передачи UDP-пакетов
+IPAddress timeServerIP;             // IP-адрес NTP сервера time.nist.gov
+byte packetBuffer[NTP_PACKET_SIZE]; // буфер для хранения принятых и исходящих пакетов
